@@ -1,0 +1,11 @@
+version: "2.16"
+
+services:
+  mongodb:
+    image: mongo:alpine
+    
+  backend:
+    build: .
+    command: python3 ./main.py
+    ports:
+      - "27017:27017"
