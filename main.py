@@ -14,6 +14,12 @@ def load(uri="localhost", datapath="data.json"):
 
         for person in data:
             coll.insert_one(person)
+    
+    return coll
 
 
-load("mongodb://localhost:27017/", "data.json.codechallenge.janv22.RHOBS.json")
+coll = load("mongodb://localhost:27017/", "data.json.codechallenge.janv22.RHOBS.json")
+
+print("Nombre de femmes:", coll.count_documents({"sex": "F"}))
+
+print("Nombre d'hommes:", coll.count_documents({"sex": "M"}))
