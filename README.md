@@ -20,12 +20,6 @@ python3 ./main.py
 docker stop m1 # to stop the container
 docker rm m1 # to remove the container
 ```
-> use -i if interactive and -t for a sudo terminal
-
-Or, to run all at once:
-```bash
-docker compose up -d
-```
 
 ## MongoDB notation:
 - Documents --> Data
