@@ -24,18 +24,18 @@ load(coll, "data.json.codechallenge.janv22.RHOBS.json")
 print("Nombre de femmes:", coll.count_documents({"sex": "F"}))
 print("Nombre d'hommes:", coll.count_documents({"sex": "M"}))
 
-def get_company_number_employers(collection, number_employers):
+def get_company_number_employees(collection, number_employees):
     companies = collection.aggregate([
         {
             "$group" : 
                 {"_id" : "$company", 
-                "num_employers" : {"$sum" : 1}
+                "num_employees" : {"$sum" : 1}
                 }
         },
         {
-            "$match" : {"num_employers" : {"$gt": number_employers}}
+            "$match" : {"num_employees" : {"$gt": number_employees}}
         }
     ])
     return list(companies)
 
-print(get_company_number_employers(coll, 50))
+print(get_company_number_employees(coll, 50))
