@@ -2,10 +2,25 @@ version: "2.16"
 
 services:
   mongodb:
-    image: mongo:alpine
-    
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - 27017:27017
+    networks:
+      - backend-python-mongodb
+
   backend:
     build: .
     command: python3 ./main.py
     ports:
-      - "27017:27017"
+      - "3000:3000"
+    links: 
+      - mongodb
+    depends_on: 
+      - mongodb
+    networks: 
+      - backend-python-mongodb
+
+networks:
+  backend-python-mongodb:
+    driver: bridge
