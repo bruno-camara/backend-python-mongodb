@@ -7,19 +7,35 @@ def collection(uri):
     collection = database["people"] # collection can be thought of as roughly the equivalent of a table in a relational database
     return collection
 
-def load(uri="localhost", datapath="data.json"):
-    coll = collection(uri=uri)
+def load(collection, datapath="data.json"):
     with open(datapath, "r") as fp:
         data = json.load(fp)
 
         for person in data:
-            coll.insert_one(person)
-    
-    return coll
+            collection.insert_one(person)
 
+# Create client, database and collection
+coll = collection("mongodb://localhost:27017/")
 
-coll = load("mongodb://localhost:27017/", "data.json.codechallenge.janv22.RHOBS.json")
+# load database
+load(coll, "data.json.codechallenge.janv22.RHOBS.json")
 
+# Count the number of men and women
 print("Nombre de femmes:", coll.count_documents({"sex": "F"}))
-
 print("Nombre d'hommes:", coll.count_documents({"sex": "M"}))
+
+def get_company_number_employers(collection, number_employers):
+    companies = collection.aggregate([
+        {
+            "$group" : 
+                {"_id" : "$company", 
+                "num_employers" : {"$sum" : 1}
+                }
+        },
+        {
+            "$match" : {"num_employers" : {"$gt": number_employers}}
+        }
+    ])
+    return list(companies)
+
+print(get_company_number_employers(coll, 50))
